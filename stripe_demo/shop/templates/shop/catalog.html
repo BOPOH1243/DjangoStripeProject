@@ -1,0 +1,20 @@
+{% extends "shop/base.html" %}
+{% block title %}Catalog{% endblock %}
+{% block content %}
+<h1>Catalog</h1>
+<div class="row">
+    {% for item in items %}
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title">{{ item.name }}</h5>
+                <p class="card-text">{{ item.description }}</p>
+                <p class="card-text">Price: {{ item.price }} {{ item.currency|upper }}</p>
+                <a href="{% url 'item_detail' item.id %}" class="btn btn-info">View & Buy</a>
+                <a href="{% url 'add_to_order' item.id %}" class="btn btn-success">Add to Order</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

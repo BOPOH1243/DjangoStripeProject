@@ -1,9 +1,7 @@
-<html>
-  <head>
-    <title>Платеж отменен</title>
-  </head>
-  <body>
-    <h1>Платеж отменен</h1>
-    <p>Вы отменили платеж. Если у вас возникли вопросы, обратитесь в поддержку.</p>
-  </body>
-</html>
+{% extends "shop/base.html" %}
+{% block title %}Cancelled{% endblock %}
+{% block content %}
+<div class="alert alert-warning" role="alert">
+    Payment cancelled. You can try again.
+</div>
+{% endblock %}

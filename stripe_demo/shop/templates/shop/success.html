@@ -1,12 +1,7 @@
-<html>
-  <head>
-    <title>Оплата успешна</title>
-  </head>
-  <body>
-    <h1>Спасибо за покупку!</h1>
-    <p>Ваш платеж прошёл успешно.</p>
-    {% if session_id %}
-      <p>Идентификатор сессии: {{ session_id }}</p>
-    {% endif %}
-  </body>
-</html>
+{% extends "shop/base.html" %}
+{% block title %}Success{% endblock %}
+{% block content %}
+<div class="alert alert-success" role="alert">
+    Payment succeeded! Thank you for your purchase.
+</div>
+{% endblock %}

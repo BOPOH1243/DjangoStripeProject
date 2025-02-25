@@ -11,7 +11,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data3
     networks:
       - app_network
 
@@ -22,6 +22,24 @@ services:
       - "6379:6379"
     volumes:
       - redis_data:/data
+    networks:
+      - app_network
+
+  web:
+    build: .
+    container_name: stripe_demo_web
+    command: sh -c "wait-for-it postgres:5432 --timeout=30 -- ./entrypoint.sh"
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/code
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: "/code"
+    depends_on:
+      - postgres
+      - redis
     networks:
       - app_network
 

@@ -1,11 +1,7 @@
 from django.contrib import admin
-from .models import Item 
+from .models import Item, Order, Discount, Tax
 
-# Класс для настройки отображения модели в админке
-class ItemAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price')  # поля, отображаемые в списке
-    search_fields = ('name',)         # поля для поиска
-    list_filter = ('price',)          # фильтры справа
-
-# Регистрируем модель и ее настройки
-admin.site.register(Item, ItemAdmin)
+admin.site.register(Item)
+admin.site.register(Order)
+admin.site.register(Discount)
+admin.site.register(Tax)

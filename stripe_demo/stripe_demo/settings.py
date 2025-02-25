@@ -9,9 +9,10 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
-
+import os
 from pathlib import Path
-
+from dotenv import load_dotenv
+load_dotenv()
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -20,10 +21,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-gakj9pjx2x)vm+%1mgvsx3!p)f&c@knuzmnfzwq^ys8%4b6vgi'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
-STRIPE_SECRET_KEY = 'sk_test_51QwJz7FWXMiaNnMX5IvJuCXwIfEG4DbAv7SficwAmhZwYChDnDhq7nYVzdUsQaOoHnpvhsaBdHrKL2BaodWVBdS700qexU4DLo'
-STRIPE_PUBLISHABLE_KEY = 'pk_test_51QwJz7FWXMiaNnMXa8zadp19QymAtVbpBR9KvCSfuAFG66W7ayCeIumtBlcfgFjqkbnSiHJghbADjiwL9j7NLb2X00AzTe5ix2'
+STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY') #'sk_test_51QwJz7FWXMiaNnMX5IvJuCXwIfEG4DbAv7SficwAmhZwYChDnDhq7nYVzdUsQaOoHnpvhsaBdHrKL2BaodWVBdS700qexU4DLo'
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_SECRET_KEY') #'pk_test_51QwJz7FWXMiaNnMXa8zadp19QymAtVbpBR9KvCSfuAFG66W7ayCeIumtBlcfgFjqkbnSiHJghbADjiwL9j7NLb2X00AzTe5ix2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -82,7 +83,7 @@ DATABASES = {
         'NAME': 'your_database',         # имя БД
         'USER': 'your_user',       # пользователь
         'PASSWORD': 'your_password', # пароль
-        'HOST': 'localhost',    # хост (или IP)
+        'HOST': 'postgres',    # хост (или IP)
         'PORT': '5432',         # порт (по умолчанию 5432)
     }
 }

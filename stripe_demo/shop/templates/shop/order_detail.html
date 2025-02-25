@@ -1,0 +1,80 @@
+{% extends "shop/base.html" %}
+{% block title %}My Order{% endblock %}
+{% block content %}
+<h1>Your Order</h1>
+{% if order and order.items.all %}
+    <ul class="list-group mb-3">
+        {% for item in order.items.all %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{ item.name }} - {{ item.price }} {{ item.currency|upper }}
+        </li>
+        {% endfor %}
+    </ul>
+    <h4>Total: {{ order.total_amount|floatformat:2 }} {{ order.order_currency|upper }}</h4>
+    <button id="checkout-button" class="btn btn-primary">Checkout Order</button>
+    <!-- Форма для оплаты PaymentIntent -->
+    <div id="payment-form" class="mt-4" style="display:none;">
+        <form id="order-payment-form">
+            <div id="card-element"><!-- сюда будет вставлен элемент карты --></div>
+            <button id="pay-order-button" class="btn btn-success mt-3">Pay</button>
+            <div id="payment-error" class="text-danger mt-2"></div>
+        </form>
+    </div>
+{% else %}
+    <p>Your order is empty. Go to <a href="{% url 'catalog' %}">catalog</a> to add items.</p>
+{% endif %}
+{% endblock %}
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ stripe_publishable_key }}');
+    var checkoutButton = document.getElementById('checkout-button');
+    var paymentFormDiv = document.getElementById('payment-form');
+    var clientSecret = null;
+    var elements = null;
+    var card = null;
+
+    checkoutButton.addEventListener('click', function() {
+        // Создаём PaymentIntent для заказа через AJAX POST
+        fetch("{% url 'create_payment_intent' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())
+        .then(function(data) {
+            if(data.error) {
+                alert(data.error);
+            } else {
+                clientSecret = data.client_secret;
+                paymentFormDiv.style.display = "block";
+                // Инициализируем Stripe Elements
+                elements = stripe.elements();
+                card = elements.create("card");
+                card.mount("#card-element");
+            }
+        })
+        .catch(function(error) {
+            console.error("Error:", error);
+        });
+    });
+
+    var orderPaymentForm = document.getElementById('order-payment-form');
+    orderPaymentForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        stripe.confirmCardPayment(clientSecret, {
+            payment_method: { card: card }
+        }).then(function(result) {
+            if (result.error) {
+                document.getElementById('payment-error').textContent = result.error.message;
+            } else {
+                if (result.paymentIntent.status === 'succeeded') {
+                    window.location.href = "{% url 'success' %}";
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

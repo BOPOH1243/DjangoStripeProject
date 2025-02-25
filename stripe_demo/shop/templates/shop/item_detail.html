@@ -1,0 +1,32 @@
+{% extends "shop/base.html" %}
+{% block title %}Buy {{ item.name }}{% endblock %}
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{ item.name }}</h5>
+        <p class="card-text">{{ item.description }}</p>
+        <p class="card-text">Price: {{ item.price }} {{ item.currency|upper }}</p>
+        <button id="buy-button" class="btn btn-primary">Buy</button>
+    </div>
+</div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+    var stripe = Stripe('{{ stripe_publishable_key }}');
+    document.getElementById('buy-button').addEventListener('click', function() {
+        fetch("{% url 'buy_item' item.id %}")
+        .then(response => response.json())
+        .then(function(session) {
+            if(session.error) {
+                alert(session.error);
+            } else {
+                stripe.redirectToCheckout({ sessionId: session.id });
+            }
+        })
+        .catch(function(error) {
+            console.error("Error:", error);
+        });
+    });
+</script>
+{% endblock %}
