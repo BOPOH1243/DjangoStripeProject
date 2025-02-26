@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY')
 
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY') #'sk_test_51QwJz7FWXMiaNnMX5IvJuCXwIfEG4DbAv7SficwAmhZwYChDnDhq7nYVzdUsQaOoHnpvhsaBdHrKL2BaodWVBdS700qexU4DLo'
-STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_SECRET_KEY') #'pk_test_51QwJz7FWXMiaNnMXa8zadp19QymAtVbpBR9KvCSfuAFG66W7ayCeIumtBlcfgFjqkbnSiHJghbADjiwL9j7NLb2X00AzTe5ix2'
+STRIPE_PUBLISHABLE_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY') #'pk_test_51QwJz7FWXMiaNnMXa8zadp19QymAtVbpBR9KvCSfuAFG66W7ayCeIumtBlcfgFjqkbnSiHJghbADjiwL9j7NLb2X00AzTe5ix2'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
